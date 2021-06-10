@@ -2,17 +2,24 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import 'moment/locale/es';
 import '../style/CalendaryApp.css';
+import { serviceUsers } from '../service/useService';
+import { useHookCite } from '../hooks/useHookCite';
 
 export const CalendaryApp = () => {
   moment.locale('es');
-  const hour = moment()// todo => variable solo para la  hora  => ARREGLAR
+  const hour = moment(); // todo => variable solo para la  hora  => ARREGLAR
   const [calendar, setCalendar] = useState([]);
   const [val, setVal] = useState(moment());
-  
+  const listUsers = useHookCite()
+ // console.log(listUsers)
+
   const startDay = val.clone().startOf('month').startOf('week');
   const endDay = val.clone().endOf('month').endOf('week');
+ 
+  ////////////////
   useEffect(() => {
     const day = startDay.clone().subtract(1, 'day');
+    //console.log(day.format('DD MM YYYY'))
     const a = [];
     while (day.isBefore(endDay, 'day')) {
       a.push(
@@ -23,7 +30,9 @@ export const CalendaryApp = () => {
     }
     setCalendar(a);
   }, [val]);
- 
+
+  ///////////Funciones//////////
+
   const currentMonthName = () => {
     return val.format('MMMM');
   };
@@ -38,25 +47,24 @@ export const CalendaryApp = () => {
     return val.clone().add(1, 'month');
   };
 
-  const isSelected  = (day) => {
-    return val.isSame(day , "day")
-  }
+  const isSelected = (day) => {
+    return val.isSame(day, 'day');
+  };
   const beforeToday = (day) => {
-    return day.isBefore(new Date(),"day")
-  }
+    return day.isBefore(new Date(), 'day');
+  };
   const isToday = (day) => {
-    return day.isSame(new Date(), "day")
-  }
+    return day.isSame(new Date(), 'day');
+  };
   const dayStyles = (day) => {
-    if(beforeToday(day)) return "before"
-    if(isSelected(day)) return "selected"
-    if(isToday(day)) return "today"
-    return ""
-  }
+    if (beforeToday(day)) return 'before';
+    if (isSelected(day)) return 'selected';
+    if (isToday(day)) return 'today';
+    return '';
+  };
   return (
     <>
     
-      <h1 className="tittle">Calendario 2021</h1>
       <div className="calendar">
         <div className="  letters_header">
           <div className="prev" onClick={() => setVal(prevMhont())}>
@@ -83,17 +91,21 @@ export const CalendaryApp = () => {
           {calendar.map((week) => (
             <div>
               {week.map((day) => (
-                <div className="day" onClick={() => setVal(day)}>
+                <div  className="day" onClick={() => setVal(day)}>
+                 
                   <div className={dayStyles(day)}>
-                    {day.format('D').toString()}
+                    {listUsers.filter(date => date.date == hour.format('YYYY MM DD'))
+                             
+                      }
+                      {day.format('D').toString()}
                   </div>
+                  
                 </div>
               ))}
             </div>
           ))}
         </div>
         <div className="hour">{hour.format('LTS')}</div>
-             
       </div>
     </>
   );

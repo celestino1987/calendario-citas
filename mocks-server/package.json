@@ -1,0 +1,12 @@
+{
+  "name": "mocks-server",
+  "version": "1.0.0",
+  "description": "Local mocks server to test developments",
+  "scripts": {
+    "prepare": "cp db-original.json db.json",
+    "start": "json-server db.json --port 4200 --delay 1000"
+  },
+  "dependencies": {
+    "json-server": "^0.16.3"
+  }
+}

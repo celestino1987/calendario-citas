@@ -3,7 +3,7 @@
   width: 80%;
   border: 1px solid rgb(255, 126, 126);
   max-width: 600px;
-  margin: 2rem auto;
+  margin: 10rem auto;
   padding: 1rem 0;
 }
 flex {
@@ -11,7 +11,7 @@ flex {
   align-items: center;
 }
 .letters_header {
-    background:rgb(255, 126, 126);
+  background:rgb(255, 126, 126);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,5 +65,5 @@ flex {
     display: flex;
     justify-content: flex-end;
     margin-right: 1%;
-    color: ;
+    
 }

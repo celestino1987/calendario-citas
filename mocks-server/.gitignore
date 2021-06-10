@@ -1,0 +1,9 @@
+# dependencies
+/node_modules
+
+# user db
+db.json
+
+# IDEs
+/.vscode
+/.idea

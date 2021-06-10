@@ -1,0 +1,127 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Hacer la compra",
+      "isDone": true
+    },
+    {
+      "id": 2,
+      "description": "Preparar el PC",
+      "isDone": true
+    },
+    {
+      "id": 3,
+      "description": "Aprender React",
+      "isDone": false
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "fullName": "Jose Antonio Postigo",
+      "birthDate": "1985-05-10",
+      "civilStatus": "single",
+      "gender": "male",
+      "phone": 2324,
+      "email": "japostigo@atsistemas.com",
+      "receiveAds": true
+    }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "title": "Head First Java",
+      "language": "Java",
+      "edition": "third",
+      "publisher": "O'Reilly",
+      "isDiscontinued": false
+    },
+    {
+      "id": 2,
+      "title": "Head First Design Pattern",
+      "language": "Java",
+      "edition": "second",
+      "publisher": "O'Reilly",
+      "isDiscontinued": false
+    },
+    {
+      "id": 3,
+      "title": "Effective Java",
+      "language": "Java",
+      "edition": "third",
+      "publisher": "Sun Microsystems",
+      "isDiscontinued": false
+    },
+    {
+      "id": 4,
+      "title": "Concurrency Practice in Java",
+      "language": "Java",
+      "edition": "first",
+      "publisher": "Sun Microsystems",
+      "isDiscontinued": false
+    },
+    {
+      "id": 5,
+      "title": "Java Generics and Collections",
+      "language": "Java",
+      "edition": "third",
+      "publisher": "O'Reilly",
+      "isDiscontinued": false
+    },
+    {
+      "id": 6,
+      "title": "Eloquent JavaScript",
+      "language": "Javascript",
+      "edition": "third",
+      "publisher": "Marijn Haverbecke",
+      "isDiscontinued": true
+    },
+    {
+      "id": 7,
+      "title": "The Book of JavaScript",
+      "language": "Javascript",
+      "edition": "second",
+      "publisher": "Dave Thau",
+      "isDiscontinued": true
+    },
+    {
+      "id": 8,
+      "title": "JavaScript, The Definitive Guide",
+      "language": "Javascript",
+      "edition": "third",
+      "publisher": "O'Reilly",
+      "isDiscontinued": true
+    },
+    {
+      "id": 9,
+      "title": "Effective JavaScript",
+      "language": "JavaScript",
+      "edition": "third",
+      "publisher": "O'Reilly",
+      "isDiscontinued": false
+    },
+    {
+      "id": 10,
+      "title": "C++ Primer",
+      "language": "C++",
+      "edition": "third",
+      "publisher": "Amazon",
+      "isDiscontinued": false
+    },
+    {
+      "id": 11,
+      "title": "Thinking in C++",
+      "language": "C++",
+      "edition": "third",
+      "publisher": "Amazon",
+      "isDiscontinued": false
+    }
+  ],
+  "counters": [
+    {
+      "id": 1,
+      "value": 0
+    }
+  ]
+}
