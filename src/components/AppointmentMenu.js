@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Button, Input } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { serviceUsers } from '../service/useService';
+import { serviceSwal } from '../service/serviceSwal';
+import '../style/AppointmentMenu.css'
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -17,47 +19,86 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AppointmentMenu = () => {
-
+  const hour = moment()
+  hour.format()
   const classes = useStyles();
 
-  const [value, setValue] = useState({
-    nombre: '',
-    date: ' '
-  });
+  const [name, setName] = useState("")
+  const [date,setDate] = useState("")
+  const cita = {
+    name : name,
+    date :date
+  }
+  
 
-  const handleOnChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
-  };
   
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    try{
-      await serviceUsers.addCita(value)
-    }catch{
+    if(!isValidForm()){
+      console.log(" Soy !isValid")
+    }else{
       
-      console.log(value.nombre + ' ' + value.date);
+      try{
+        await serviceUsers.addCita(cita)
+        serviceSwal(
+          'success',
+          'Cita cogida correctamente',
+          "",
+          false,
+          false,
+          1500
+          );
+         setDate("")
+         setName("")
+        }catch{
+          
+          console.log("error ");
+        }
+      }
+      
+    };
+    const isValidForm = () =>{
+      if (name?.length <= 0){
+        serviceSwal(
+          'error',
+          'Oops..',
+          'El campo nombre debe rellenarse',
+          true
+        );
+        return false;
+        
+      }
+     if (date <= hour.format('YYYY MM DD')){
+       serviceSwal(
+         'error',
+         'Oops..',
+         'la fecha tiene que ser posterior',
+         true
+       );
+       return false;
+     }
+      return true
+  
     }
-    e.target.reset()
-  };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <TextField
-          name="nombre"
-          onChange={handleOnChange}
+          
+          value={name}
+          onChange={(e)=> setName(e.target.value)}
           id="standard-basic"
           label="Nombre"
           color="secondary"
           margin="normal"
+        
          
         />
         <TextField
-          name="date"
-          onChange={handleOnChange}
+          
+          value={date}
+          onChange={(e)=> setDate(e.target.value)}
           margin="normal"
           color="secondary"
           id="date"
@@ -69,7 +110,7 @@ export const AppointmentMenu = () => {
             shrink: true,
           }}
         />
-        <Button color="secondary" type="submit">
+        <Button className="btnSubmit" color="secondary" type="submit">
           Registrar
         </Button>
       </form>
