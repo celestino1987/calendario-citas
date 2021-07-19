@@ -10,6 +10,7 @@ export const CalendaryApp = () => {
   const hour = moment(); // todo => variable solo para la  hora  => ARREGLAR
   const [calendar, setCalendar] = useState([]);
   const [val, setVal] = useState(moment());
+  const [days, setDays] = useState(new Array(30).fill(''))
   const listUsers = useHookCite()
  // console.log(listUsers)
 
@@ -29,7 +30,11 @@ export const CalendaryApp = () => {
       );
     }
     setCalendar(a);
-  }, [val]);
+    const daysWithDates = days.map((day,index) => {
+      return listUsers.find((user) => user.NEWDAY === (index+1).toString()) || day
+    })
+    setDays(daysWithDates);
+  }, [listUsers]);
 
   ///////////Funciones//////////
 
@@ -88,16 +93,14 @@ export const CalendaryApp = () => {
           <div>Domingo</div>
         </div>
         <div className="calendarDays">
-          {calendar.map((week) => (
-            <div>
-              {week.map((day) => (
-                <div  className="day" onClick={() => setVal(day)}>
+          {calendar.map((week, indexWeek) => (
+            <div key={(1 + indexWeek).toString()}>
+              {week.map((day, indexParent) => (
+                <div className="day" onClick={() => setVal(day)}>
                  
                   <div className={dayStyles(day)}>
-                    {listUsers.filter(date => date.date == hour.format('YYYY MM DD'))
-                             
-                      }
-                      {day.format('D').toString()}
+                      <p>{day.format('D').toString()}</p>
+                      <p>{(listUsers.find((user) => user.NEWDAY === day.format('D').toString()))?.name || ''}</p>
                   </div>
                   
                 </div>
