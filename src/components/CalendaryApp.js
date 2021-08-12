@@ -1,21 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import 'moment/locale/es';
 import '../style/CalendaryApp.css';
-import { serviceUsers } from '../service/useService';
+
 import { useHookCite } from '../hooks/useHookCite';
+import { DaysContext } from "./context/DaysContext";
 
 export const CalendaryApp = () => {
-  moment.locale('es');
-  const hour = moment(); // todo => variable solo para la  hora  => ARREGLAR
+
+  const { days, setDays } = useContext(DaysContext);
+  moment.locale("es");
+  const [time , setTime] = useState()
+
+  
   const [calendar, setCalendar] = useState([]);
   const [val, setVal] = useState(moment());
-  const [days, setDays] = useState(new Array(30).fill(''))
+  
   const listUsers = useHookCite()
- // console.log(listUsers)
-
+  // console.log(listUsers)
   const startDay = val.clone().startOf('month').startOf('week');
   const endDay = val.clone().endOf('month').endOf('week');
+useEffect(() => {
+ setTime(moment().calendar())
+ console.log(time)
+ 
+}, [time])
+   
+
  
   ////////////////
   useEffect(() => {
@@ -34,7 +45,7 @@ export const CalendaryApp = () => {
       return listUsers.find((user) => user.NEWDAY === (index+1).toString()) || day
     })
     setDays(daysWithDates);
-  }, [listUsers]);
+  }, [listUsers,val]);
 
   ///////////Funciones//////////
 
@@ -94,7 +105,7 @@ export const CalendaryApp = () => {
         </div>
         <div className="calendarDays">
           {calendar.map((week, indexWeek) => (
-            <div key={(1 + indexWeek).toString()}>
+            <div className="dayName" key={(1 + indexWeek).toString()}>
               {week.map((day, indexParent) => (
                 <div className="day" onClick={() => setVal(day)}>
                  
@@ -108,7 +119,7 @@ export const CalendaryApp = () => {
             </div>
           ))}
         </div>
-        <div className="hour">{hour.format('LTS')}</div>
+        <div className="hour">{time}</div>
       </div>
     </>
   );

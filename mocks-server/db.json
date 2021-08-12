@@ -1,0 +1,31 @@
+{
+  "citas": [
+    {
+      "name": "jesus",
+      "surname": "francis",
+      "date": "2021-08-13",
+      "YEAR": "2021",
+      "MONTH": "08",
+      "NEWDAY": "13",
+      "id": 1
+    },
+    {
+      "name": "francis",
+      "surname": "ww",
+      "date": "2021-08-11",
+      "YEAR": "2021",
+      "MONTH": "08",
+      "NEWDAY": "11",
+      "id": 2
+    },
+    {
+      "name": "francis",
+      "surname": "jesus",
+      "date": "2021-08-12",
+      "YEAR": "2021",
+      "MONTH": "08",
+      "NEWDAY": "12",
+      "id": 3
+    }
+  ]
+}

@@ -39,6 +39,7 @@ flex {
   border-bottom: 1px solid black;
 }
 .day {
+  
   position: relative;
   width: calc(100% / 7);
   height: 44px;
@@ -66,4 +67,12 @@ flex {
     justify-content: flex-end;
     margin-right: 1%;
     
+}
+.dayName{
+  
+  display: flex;
+  align-items: center;
+}
+.name{
+  color: rgb(117, 116, 116);
 }

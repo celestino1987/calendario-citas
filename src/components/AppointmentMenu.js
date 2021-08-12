@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Button } from '@material-ui/core';
+
 import { serviceUsers } from '../service/useService';
 import { serviceSwal } from '../service/serviceSwal';
+import { DaysContext } from "./context/DaysContext";
 import '../style/AppointmentMenu.css';
+import { Button } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -19,9 +21,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AppointmentMenu = () => {
-  const hour = moment();
-  hour.format() ;
+  const hour = moment().format('D');
+  console.log(hour)
   
+  const { days} = useContext(DaysContext);
   const classes = useStyles();
   
   const [name, setName] = useState('');
@@ -40,6 +43,7 @@ export const AppointmentMenu = () => {
     NEWDAY:NEWDAY
 
   };
+  const x = days?.map((name) => name.NEWDAY).filter((NEWDAY) => NEWDAY);
  
   const handleSubmit = async (e) => {
     e?.preventDefault();
@@ -65,11 +69,25 @@ export const AppointmentMenu = () => {
     }
   };
   const isValidForm = () => {
+    for (let i = 0; i < x?.length; i++) {
+      console.log("bucle for");
+      if (x[i] == cita.NEWDAY) {
+        serviceSwal(
+          "error",
+          "Oops..",
+          "Esta día  ya tiene cita, coja otro día",
+          true
+        );
+        return false;
+      }
+    }
+
+  
     if (name?.length <= 0) {
       serviceSwal('error', 'Oops..', 'El campo nombre debe rellenarse', true);
       return false;
     }
-    if (date <= hour.format('YYYY MM DD')) {
+    if (cita.NEWDAY < hour) {
       serviceSwal('error', 'Oops..', 'la fecha tiene que ser posterior', true);
       return false;
     }
@@ -115,4 +133,5 @@ export const AppointmentMenu = () => {
       </form>
     </>
   );
+  
 };
