@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
@@ -21,23 +21,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AppointmentMenu = () => {
-  const allDate = moment().format('DDMMYYYY');
-  const momentDay = allDate.slice(0,2)
-  const momentMonth = allDate.slice(2,4)
-  const momentYear = allDate.slice(4)
- 
- 
+
+  const classes = useStyles();
+  const allDate = moment().format("DDMMYYYY");
+  const momentDay = allDate.slice(0, 2);
+  const momentMonth = allDate.slice(2, 4);
+  const momentYear = allDate.slice(4);
 
   const { days } = useContext(DaysContext);
-  const classes = useStyles();
+  const selectDay = days?.map((name) => name.NEWDAY).filter((NEWDAY) => NEWDAY);
 
   const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [date, setDate] = useState("");
   const YEAR = date.slice(0, 4);
   const MONTH = date.slice(5, 7);
   const NEWDAY = date.slice(8);
 
-  const [surname, setSurname] = useState("");
   const cita = {
     name: name,
     surname: surname,
@@ -46,8 +46,26 @@ export const AppointmentMenu = () => {
     MONTH: MONTH,
     NEWDAY: NEWDAY,
   };
-  console.log(cita.MONTH)
-  const selectDay = days?.map((name) => name.NEWDAY).filter((NEWDAY) => NEWDAY);
+
+  useEffect(() => {
+    const backDay = days.find(function (user) {
+      if (user.NEWDAY < momentDay) {
+       
+        return user;
+      }
+    });
+    
+   
+    const delDay = async () => {
+      try {
+        await serviceUsers.deleteCita(backDay?.id);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+   delDay();
+   
+  }, [momentDay])  
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
@@ -78,19 +96,30 @@ export const AppointmentMenu = () => {
       return false;
     }
     //validacion  para verificar que la sita es posterio a dia , mes y año
-    if (  cita.YEAR < momentYear || cita.NEWDAY < momentDay && cita.MONTH < momentMonth  ) {
+    if (
+      cita.YEAR < momentYear ||
+      (cita.NEWDAY < momentDay && cita.MONTH < momentMonth)
+    ) {
       serviceSwal("error", "Oops..", "La fecha tiene que ser posterior", true);
       return false;
     } else if (cita.MONTH == momentMonth) {
       if (cita.NEWDAY < momentDay) {
         serviceSwal("error", "Oops..", "el dia tiene que ser posterior", true);
-        return false
+        return false;
       }
-
+    } else if (cita.MONTH > momentMonth) {
+      serviceSwal(
+        "error",
+        "Oops..",
+        "Tienes que  coger cita este mes !Lo sentimos...",
+        true
+      );
+      return false;
     }
-// validacion para verificar que ese dia hay o no cita
+    //borrar cita si ya paso el dia
+
+    // validacion para verificar que ese dia hay o no cita
     for (let i = 0; i < selectDay?.length; i++) {
-      
       if (selectDay[i] == cita.NEWDAY) {
         serviceSwal(
           "error",
@@ -110,7 +139,6 @@ export const AppointmentMenu = () => {
         <TextField
           value={name}
           onChange={(e) => setName(e.target.value)}
-          id="standard-basic"
           label="Nombre"
           color="secondary"
           margin="normal"
@@ -118,7 +146,6 @@ export const AppointmentMenu = () => {
         <TextField
           value={surname}
           onChange={(e) => setSurname(e.target.value)}
-          id="standard-basic"
           label="Apellido"
           color="secondary"
           margin="normal"

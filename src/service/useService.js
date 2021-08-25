@@ -1,12 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-
-const URL = 'http://localhost:4200';
-const  CITAS = 'citas';
+const URL = "http://localhost:4200";
+const CITAS = "citas";
 
 export const serviceUsers = {
-  addCita:(formCita)=> axios.post(`${URL}/${CITAS} `, formCita),
+  addCita: (formCita) => axios.post(`${URL}/${CITAS} `, formCita),
   getCita: () => axios.get(`${URL}/${CITAS}`),
- 
-
-}
+  deleteCita: (id) => axios.delete(`${URL}/${CITAS}/${id}`)
+};
