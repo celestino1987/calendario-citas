@@ -149,6 +149,9 @@ export const NavarDrawer = () => {
           ))}
         </List>
         <Divider />
+        <AppointmentMenu />
+
+        
       </Drawer>
     </div>
   );

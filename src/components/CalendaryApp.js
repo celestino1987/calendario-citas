@@ -78,7 +78,7 @@ export const CalendaryApp = () => {
     });
 
     setDays(daysWithDates);
-  }, [listUsers, val]);
+  }, [listUsers, val] );
   return (
     <>
       <div className="calendar">
