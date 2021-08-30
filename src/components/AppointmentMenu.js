@@ -1,5 +1,5 @@
-import React, { useContext, useState,useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
+import React, { useContext, useState, useEffect } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 
@@ -7,7 +7,7 @@ import { serviceUsers } from "../service/useService";
 import { serviceSwal } from "../service/serviceSwal";
 import { DaysContext } from "./context/DaysContext";
 import "../style/AppointmentMenu.css";
-import { Button } from "@material-ui/core";
+import { AppForm } from "./AppForm";
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AppointmentMenu = () => {
-
   const classes = useStyles();
   const allDate = moment().format("DDMMYYYY");
   const momentDay = allDate.slice(0, 2);
@@ -30,7 +29,7 @@ export const AppointmentMenu = () => {
 
   const { days } = useContext(DaysContext);
   const selectDay = days?.map((name) => name.NEWDAY).filter((NEWDAY) => NEWDAY);
-
+  
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [date, setDate] = useState("");
@@ -47,26 +46,7 @@ export const AppointmentMenu = () => {
     NEWDAY: NEWDAY,
   };
 
-  useEffect(() => {
-    const backDay = days.find(function (user) {
-      if (user.NEWDAY < momentDay) {
-       
-        return user;
-      }
-    });
-    
-   
-    const delDay = async () => {
-      try {
-        await serviceUsers.deleteCita(backDay?.id);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-   delDay();
-   
-  }, [momentDay])  
-
+  
   const handleSubmit = async (e) => {
     e?.preventDefault();
     if (!isValidForm()) {
@@ -81,18 +61,18 @@ export const AppointmentMenu = () => {
           false,
           false,
           1500
-        );
-        setDate("");
-        setName("");
-        setSurname("");
-      } catch {
-        console.log("error del catch ");
+          );
+          setDate("");
+          setName("");
+          setSurname("");
+        } catch {
+          console.log("error del catch ");
+        }
       }
-    }
-  };
-  const isValidForm = () => {
-    if (name?.length <= 0) {
-      serviceSwal("error", "Oops..", "El campo nombre debe rellenarse", true);
+    };
+    const isValidForm = () => {
+      if (name?.length <= 0) {
+        serviceSwal("error", "Oops..", "El campo nombre debe rellenarse", true);
       return false;
     }
     //validacion  para verificar que la sita es posterio a dia , mes y año
@@ -132,41 +112,37 @@ export const AppointmentMenu = () => {
     }
     return true;
   };
+  
+  useEffect(() => {
+    let backDay = days.find((num) => num);
 
+    console.log(backDay);
+
+    const delDay = async () => {
+      if (backDay) {
+        try {
+          if (backDay.NEWDAY < momentDay) {
+            await serviceUsers.deleteCita(backDay.id);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    delDay();
+  }, [allDate]);
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          label="Nombre"
-          color="secondary"
-          margin="normal"
-        />
-        <TextField
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
-          label="Apellido"
-          color="secondary"
-          margin="normal"
-        />
-        <TextField
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          margin="normal"
-          color="secondary"
-          id="date"
-          label="Fecha cita"
-          type="date"
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <Button className="btnSubmit" color="secondary" type="submit">
-          Registrar
-        </Button>
-      </form>
+      <AppForm
+        classes={classes}
+        name={name}
+        setName={setName}
+        surname={surname}
+        setSurname={setSurname}
+        date={date}
+        setDate={setDate}
+        handleSubmit={handleSubmit}
+      />
     </>
   );
 };

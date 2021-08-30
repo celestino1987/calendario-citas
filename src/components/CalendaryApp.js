@@ -5,22 +5,24 @@ import "../style/CalendaryApp.css";
 
 import { useHookCite } from "../hooks/useHookCite";
 import { DaysContext } from "./context/DaysContext";
+import { RenderCalendary } from "./RenderCalendary";
 
 export const CalendaryApp = () => {
   moment.locale("es");
   const { days, setDays } = useContext(DaysContext);
 
-  const [time, setTime] = useState();
   const [calendar, setCalendar] = useState([]);
   const [val, setVal] = useState(moment());
-
+  
   const listUsers = useHookCite();
-  // console.log(listUsers)
+  
   const startDay = val.clone().startOf("month").startOf("week");
   const endDay = val.clone().endOf("month").endOf("week");
   ///////
-
+  
+  
   ///////////Funciones//////////
+
 
   const currentMonthName = () => {
     return val.format("MMMM");
@@ -46,17 +48,13 @@ export const CalendaryApp = () => {
     return day.isSame(new Date(), "day");
   };
   const dayStyles = (day) => {
-    if (beforeToday(day)) return "before";
+    if (beforeToday(day)) return "before"
     if (isSelected(day)) return "selected";
     if (isToday(day)) return "today";
     return "";
   };
 
-  useEffect(() => {
-    setTimeout(function () {
-      setTime(moment().format("LTS"));
-    }, 1000);
-  }, [time]);
+ ;
 
   ////////////////
   useEffect(() => {
@@ -78,55 +76,22 @@ export const CalendaryApp = () => {
     });
 
     setDays(daysWithDates);
-  }, [listUsers, val] );
+  }, [listUsers, val]);
   return (
     <>
-      <div className="calendar">
-        <div className="  letters_header">
-          <div className="prev" onClick={() => setVal(prevMhont())}>
-            &#9664;
-          </div>
-          <div>
-            {currentMonthName()} {currentYear()}{" "}
-          </div>
-
-          <div className="next" onClick={() => setVal(nextMhont())}>
-            &#9654;
-          </div>
-        </div>
-        <div className="calendarWeek">
-          <div>Lunes</div>
-          <div>Martes</div>
-          <div>Miercoles</div>
-          <div>Jueves</div>
-          <div>Viernes</div>
-          <div>Sabado</div>
-          <div>Domingo</div>
-        </div>
-        <div className="calendarDays">
-          {calendar.map((week, indexWeek) => (
-            <div className="dayName" key={(1 + indexWeek).toString()}>
-              {week.map((day, indexParent) => (
-                <div className="day" key={1 + indexParent} onClick={() => setVal(day)}>
-                  <div className={dayStyles(day)}>
-                    <p>{day.format("D").toString()}</p>
-                    <p>
-                      {(listUsers.find(
-                        (user) => user.MONTH == val.format("MM")
-                      ) &&
-                        listUsers.find(
-                          (user) => user.NEWDAY === day.format("DD").toString()
-                        )?.name) ||
-                        ""}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="hour">{time}</div>
-      </div>
+      <RenderCalendary
+        calendar={calendar}
+        val={val}
+        setVal={setVal}
+        currentMonthName={currentMonthName}
+        currentYear={currentYear}
+        prevMhont={prevMhont}
+        nextMhont={nextMhont}
+        dayStyles={dayStyles}
+      
+        listUsers={listUsers}
+       
+      />
     </>
   );
 };
